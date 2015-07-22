@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Cuisines</key>
+	<dict>
+		<key>American</key>
+		<false/>
+		<key>Italian</key>
+		<false/>
+		<key>Indian</key>
+		<true/>
+		<key>Mexican</key>
+		<true/>
+		<key>French</key>
+		<false/>
+		<key>English</key>
+		<false/>
+		<key>Mediterranean</key>
+		<false/>
+		<key>Thai</key>
+		<false/>
+		<key>Chinese</key>
+		<false/>
+		<key>Vietnamese</key>
+		<false/>
+		<key>Japanese</key>
+		<false/>
+		<key>Korean</key>
+		<false/>
+		<key>Ethiopian</key>
+		<false/>
+		<key>Greek</key>
+		<false/>
+	</dict>
+</dict>
+</plist>

@@ -8,11 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		9D5B04941B5E0896002944CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B04931B5E0896002944CE /* AppDelegate.swift */; };
-		9D5B04961B5E0896002944CE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B04951B5E0896002944CE /* ViewController.swift */; };
 		9D5B04991B5E0896002944CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B04971B5E0896002944CE /* Main.storyboard */; };
 		9D5B049B1B5E0896002944CE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B049A1B5E0896002944CE /* Images.xcassets */; };
 		9D5B049E1B5E0896002944CE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B049C1B5E0896002944CE /* LaunchScreen.xib */; };
 		9D5B04AA1B5E0896002944CE /* YummysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B04A91B5E0896002944CE /* YummysTests.swift */; };
+		9D5B04B41B5F51CB002944CE /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B04B31B5F51CB002944CE /* Config.plist */; };
+		9D5B04B51B5F51CB002944CE /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B04B31B5F51CB002944CE /* Config.plist */; };
+		9D5B04BA1B5F53B7002944CE /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B04B91B5F53B7002944CE /* SettingsTableViewController.swift */; };
+		9D5B04BB1B5F53B7002944CE /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B04B91B5F53B7002944CE /* SettingsTableViewController.swift */; };
+		9D5B04BD1B5F5539002944CE /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B04BC1B5F5539002944CE /* Settings.swift */; };
+		9D5B04BE1B5F5539002944CE /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B04BC1B5F5539002944CE /* Settings.swift */; };
+		9D5B04C01B5F56A3002944CE /* RestaurantsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B04BF1B5F56A3002944CE /* RestaurantsTableViewController.swift */; };
+		9D5B04C11B5F56A3002944CE /* RestaurantsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B04BF1B5F56A3002944CE /* RestaurantsTableViewController.swift */; };
+		9D5B04C61B5F7411002944CE /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B04C51B5F7411002944CE /* SettingsTableViewCell.swift */; };
+		9D5B04C71B5F7411002944CE /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B04C51B5F7411002944CE /* SettingsTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,13 +38,17 @@
 		9D5B048E1B5E0896002944CE /* Yummys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yummys.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D5B04921B5E0896002944CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D5B04931B5E0896002944CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9D5B04951B5E0896002944CE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9D5B04981B5E0896002944CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9D5B049A1B5E0896002944CE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9D5B049D1B5E0896002944CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		9D5B04A31B5E0896002944CE /* YummysTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YummysTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D5B04A81B5E0896002944CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D5B04A91B5E0896002944CE /* YummysTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YummysTests.swift; sourceTree = "<group>"; };
+		9D5B04B31B5F51CB002944CE /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
+		9D5B04B91B5F53B7002944CE /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		9D5B04BC1B5F5539002944CE /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		9D5B04BF1B5F56A3002944CE /* RestaurantsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantsTableViewController.swift; sourceTree = "<group>"; };
+		9D5B04C51B5F7411002944CE /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +91,10 @@
 			isa = PBXGroup;
 			children = (
 				9D5B04931B5E0896002944CE /* AppDelegate.swift */,
-				9D5B04951B5E0896002944CE /* ViewController.swift */,
+				9D5B04B91B5F53B7002944CE /* SettingsTableViewController.swift */,
+				9D5B04BC1B5F5539002944CE /* Settings.swift */,
+				9D5B04C51B5F7411002944CE /* SettingsTableViewCell.swift */,
+				9D5B04BF1B5F56A3002944CE /* RestaurantsTableViewController.swift */,
 				9D5B04971B5E0896002944CE /* Main.storyboard */,
 				9D5B049A1B5E0896002944CE /* Images.xcassets */,
 				9D5B049C1B5E0896002944CE /* LaunchScreen.xib */,
@@ -91,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				9D5B04921B5E0896002944CE /* Info.plist */,
+				9D5B04B31B5F51CB002944CE /* Config.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -192,6 +209,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D5B04B41B5F51CB002944CE /* Config.plist in Resources */,
 				9D5B04991B5E0896002944CE /* Main.storyboard in Resources */,
 				9D5B049E1B5E0896002944CE /* LaunchScreen.xib in Resources */,
 				9D5B049B1B5E0896002944CE /* Images.xcassets in Resources */,
@@ -202,6 +220,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D5B04B51B5F51CB002944CE /* Config.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,7 +231,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D5B04961B5E0896002944CE /* ViewController.swift in Sources */,
+				9D5B04BD1B5F5539002944CE /* Settings.swift in Sources */,
+				9D5B04BA1B5F53B7002944CE /* SettingsTableViewController.swift in Sources */,
+				9D5B04C01B5F56A3002944CE /* RestaurantsTableViewController.swift in Sources */,
+				9D5B04C61B5F7411002944CE /* SettingsTableViewCell.swift in Sources */,
 				9D5B04941B5E0896002944CE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -221,6 +243,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D5B04BE1B5F5539002944CE /* Settings.swift in Sources */,
+				9D5B04BB1B5F53B7002944CE /* SettingsTableViewController.swift in Sources */,
+				9D5B04C11B5F56A3002944CE /* RestaurantsTableViewController.swift in Sources */,
+				9D5B04C71B5F7411002944CE /* SettingsTableViewCell.swift in Sources */,
 				9D5B04AA1B5E0896002944CE /* YummysTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -411,6 +437,7 @@
 				9D5B04AF1B5E0896002944CE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9D5B04B01B5E0896002944CE /* Build configuration list for PBXNativeTarget "YummysTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +446,7 @@
 				9D5B04B21B5E0896002944CE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
