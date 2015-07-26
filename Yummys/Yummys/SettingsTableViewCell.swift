@@ -26,14 +26,28 @@ class SettingsTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    
     @IBAction func swtichChanged() {
+        Settings.sharedInstance.cuisines[cuisineKey] = theSwitch.on
         if (theSwitch.on) {
-            titleLable.textColor = UIColor.greenColor()
+            //titleLable.textColor = UIColor.greenColor()
+            self.backgroundColor = UIColor.purpleColor()
+            self.titleLable.textColor = UIColor.whiteColor()
         } else {
-            titleLable.textColor = UIColor.grayColor()
+            //titleLable.textColor = UIColor.grayColor()
+        }        
+    }
+    
+    func didSelect() {
+        theSwitch.on = !theSwitch.on
+        Settings.sharedInstance.cuisines[cuisineKey] = theSwitch.on
+        if (theSwitch.on) {
+            //titleLable.textColor = UIColor.greenColor()
+            self.backgroundColor = UIColor.purpleColor()
+            self.titleLable.textColor = UIColor.whiteColor()
+        } else {
+            //titleLable.textColor = UIColor.grayColor()
         }
-        Settings.sharedInstance.cuisines.setObject(NSNumber(bool: true), forKey: cuisineKey)
-        
     }
 
 }

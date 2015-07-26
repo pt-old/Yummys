@@ -14,8 +14,10 @@ class SettingsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.separatorEffect = UIVibrancyEffect()
+        //self.tableView.separatorEffect = UIVibrancyEffect()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveSettings" )
+        self.tableView.allowsSelection = false
+        //self.tableView.separatorColor = UIColor.blueColor()
         
     }
 
@@ -43,13 +45,16 @@ class SettingsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("SETTINGS_CELL", forIndexPath: indexPath) as! SettingsTableViewCell
         var  keys:[String] = Settings.sharedInstance.cuisines.allKeys as! [String]
-        let sortedCuisines =  Array(keys).sorted({$0.0 < $1.0})
+        let sortedCuisines =  Array(keys).sorted(<)
+        
+       
         
         cell.titleLable!.text = sortedCuisines[indexPath.row]
         cell.theSwitch.on = Settings.sharedInstance.cuisines[sortedCuisines[indexPath.row]] as! Bool
         cell.cuisineKey = sortedCuisines[indexPath.row]
         if (cell.theSwitch.on) {
-            cell.titleLable!.textColor = UIColor.greenColor()
+            cell.titleLable!.textColor = UIColor.whiteColor()
+            cell.backgroundColor = UIColor.purpleColor()
         } else {
             cell.titleLable.textColor = UIColor.grayColor()
         }
@@ -57,6 +62,11 @@ class SettingsTableViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = self.tableView.cellForRowAtIndexPath(indexPath) as! SettingsTableViewCell
+        cell.didSelect()
+
+    }
 
     /*
     // Override to support conditional editing of the table view.
