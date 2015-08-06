@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>F065F55E-1FBC-49F5-AB0C-F0B918EDF939</string>
 	<key>IDESourceControlProjectName</key>
-	<string>Yummys</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>758416110ACA00D5CC2DCED29524D4AAFC7BC63F</key>
 		<string>https://github.com/piyushtank/Yummys.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Yummys/Yummys.xcodeproj</string>
+	<string>Yummys/Yummys.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>758416110ACA00D5CC2DCED29524D4AAFC7BC63F</key>
