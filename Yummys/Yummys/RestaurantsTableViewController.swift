@@ -7,8 +7,18 @@
 //
 
 import UIKit
+import CoreLocation
 
-class RestaurantsTableViewController: UITableViewController {
+class RestaurantsTableViewController: UITableViewController, CLLocationManagerDelegate {
+    
+    let yelpInterface = YelpInterface()
+    let term = "dinner"
+    ///let location = "Sunnyvale, CA"
+    
+    let locationManager:CLLocationManager! = CLLocationManager()
+    var myLocations: [CLLocation] = []
+    var businesses : NSArray = NSArray()
+    
     
     var settingsViewController : UINavigationController {
         let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -18,9 +28,63 @@ class RestaurantsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.locationManager.requestAlwaysAuthorization()
+        
+        // For use in foreground
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+            locationManager.startUpdatingLocation()
+        }
+        
+        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Settings", style: .Plain, target: self, action: "loadSettings")
-
     }
+    
+    func locationManager(manager: CLLocationManager!, didUpdateToLocation newLocation: CLLocation!, fromLocation oldLocation: CLLocation!)
+    {
+        print("hi")
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        var locValue:CLLocationCoordinate2D = locationManager.location.coordinate
+        if (currentLocation != nil) {
+            //println("locations = \(locValue.latitude),\(locValue.longitude)")
+            
+            yelpInterface.queryBusinessInfoForTerm(self.term, location: "\(self.currentLocation!.latitude),\(self.currentLocation!.longitude)") { (businesses, err) -> Void in
+                for business:NSDictionary in businesses as! [NSDictionary] {
+                    NSLog((business.objectForKey("name") as? String)!)
+                }
+                self.businesses = Filter.sharedInstance.run(businesses)
+                dispatch_async(dispatch_get_main_queue(), {self.tableView.reloadData()})
+            }
+        }
+    }
+    
+
+
+    var currentLocation : CLLocationCoordinate2D?
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        var locValue:CLLocationCoordinate2D = manager.location.coordinate
+        if (currentLocation == nil ||
+            currentLocation!.latitude != locValue.latitude ||
+            currentLocation!.longitude != locValue.longitude) {
+            currentLocation = locValue
+            //println("locations = \(locValue.latitude),\(locValue.longitude)")
+            
+            yelpInterface.queryBusinessInfoForTerm(self.term, location: "\(self.currentLocation!.latitude),\(self.currentLocation!.longitude)") { (businesses, err) -> Void in
+                for business:NSDictionary in businesses as! [NSDictionary] {
+                    NSLog((business.objectForKey("name") as? String)!)
+                }
+                self.businesses = Filter.sharedInstance.run(businesses)
+                dispatch_async(dispatch_get_main_queue(), {self.tableView.reloadData()})
+            }
+        }
+    }
+
 
     
     override func viewDidAppear(animated: Bool) {
@@ -47,24 +111,24 @@ class RestaurantsTableViewController: UITableViewController {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 0
+        return businesses.count
     }
 
-    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCellWithIdentifier("RESTAURANTS_CELL", forIndexPath: indexPath) as! UITableViewCell
+        
+        let business: NSDictionary = businesses[indexPath.row] as! NSDictionary
+        cell.textLabel!.text = business.objectForKey("name") as? String
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -110,5 +174,7 @@ class RestaurantsTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
 
 }
