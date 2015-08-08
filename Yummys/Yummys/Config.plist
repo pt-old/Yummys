@@ -4,7 +4,25 @@
 <dict>
 	<key>Cuisines</key>
 	<dict>
-		<key>American</key>
+		<key>Wine Bars</key>
+		<false/>
+		<key>Bars</key>
+		<false/>
+		<key>Seafood</key>
+		<false/>
+		<key>Sushi Bars</key>
+		<false/>
+		<key>Middle Eastern</key>
+		<false/>
+		<key>Chicken Wings</key>
+		<false/>
+		<key>Afghan</key>
+		<false/>
+		<key>Pizza</key>
+		<false/>
+		<key>German</key>
+		<false/>
+		<key>American (New)</key>
 		<false/>
 		<key>Italian</key>
 		<false/>

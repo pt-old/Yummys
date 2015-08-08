@@ -16,7 +16,7 @@ class SettingsTableViewController: UITableViewController {
         super.viewDidLoad()
         //self.tableView.separatorEffect = UIVibrancyEffect()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveSettings" )
-        self.tableView.allowsSelection = false
+        //self.tableView.allowsSelection = false
         //self.tableView.separatorColor = UIColor.blueColor()
         
     }
@@ -47,24 +47,23 @@ class SettingsTableViewController: UITableViewController {
         var  keys:[String] = Settings.sharedInstance.cuisines.allKeys as! [String]
         let sortedCuisines =  Array(keys).sorted(<)
         
-       
-        
         cell.titleLable!.text = sortedCuisines[indexPath.row]
         cell.theSwitch.on = Settings.sharedInstance.cuisines[sortedCuisines[indexPath.row]] as! Bool
         cell.cuisineKey = sortedCuisines[indexPath.row]
         if (cell.theSwitch.on) {
-            cell.titleLable!.textColor = UIColor.whiteColor()
-            cell.backgroundColor = UIColor.purpleColor()
+            //cell.titleLable!.textColor = UIColor.whiteColor()
+            //cell.backgroundColor = UIColor.purpleColor()
         } else {
-            cell.titleLable.textColor = UIColor.grayColor()
+            //cell.titleLable.textColor = UIColor.grayColor()
         }
-        
+        cell.selectionStyle = .None
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = self.tableView.cellForRowAtIndexPath(indexPath) as! SettingsTableViewCell
         cell.didSelect()
+        cell.setHighlighted(false, animated: false)
 
     }
 

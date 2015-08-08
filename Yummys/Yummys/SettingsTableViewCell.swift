@@ -27,24 +27,30 @@ class SettingsTableViewCell: UITableViewCell {
     }
     
     
+    
     @IBAction func swtichChanged() {
-        Settings.sharedInstance.cuisines[cuisineKey] = theSwitch.on
-        if (theSwitch.on) {
-            //titleLable.textColor = UIColor.greenColor()
-            self.backgroundColor = UIColor.purpleColor()
-            self.titleLable.textColor = UIColor.whiteColor()
-        } else {
-            //titleLable.textColor = UIColor.grayColor()
-        }        
+        Settings.sharedInstance.cuisines.setObject(Bool(theSwitch.on), forKey: cuisineKey)
+//        if (theSwitch.on) {
+//            //titleLable.textColor = UIColor.greenColor()
+//            self.backgroundColor = UIColor.purpleColor()
+//            self.titleLable.textColor = UIColor.whiteColor()
+//        } else {
+//            self.backgroundColor = UIColor.purpleColor()
+//        }        
     }
     
     func didSelect() {
         theSwitch.on = !theSwitch.on
-        Settings.sharedInstance.cuisines[cuisineKey] = theSwitch.on
+        if (theSwitch.on) {
+            Settings.sharedInstance.cuisines[cuisineKey] = Bool(true)
+        }
+        else {
+            Settings.sharedInstance.cuisines[cuisineKey] = Bool(false)
+        }
         if (theSwitch.on) {
             //titleLable.textColor = UIColor.greenColor()
-            self.backgroundColor = UIColor.purpleColor()
-            self.titleLable.textColor = UIColor.whiteColor()
+           // self.backgroundColor = UIColor.purpleColor()
+           // self.titleLable.textColor = UIColor.whiteColor()
         } else {
             //titleLable.textColor = UIColor.grayColor()
         }

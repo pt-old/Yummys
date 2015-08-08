@@ -16,31 +16,53 @@ class Settings : NSObject {
     
     
     var configFilePath : String {
-        return NSBundle.mainBundle().pathForResource("Config", ofType: "plist")!
+        get
+        {
+            return NSBundle.mainBundle().pathForResource("Config", ofType: "plist")!
+        }
     }
 //    lazy var cuisines : NSMutableDictionary = {
 //        let config:NSMutableDictionary =  NSMutableDictionary(contentsOfFile: self.configFilePath as String)!
 //        return config.objectForKey("Cuisines") as! NSMutableDictionary
 //    }()
     
-    var cuisines : NSMutableDictionary 
-    {
-        get
-            {
+    
+    lazy var cuisines:NSMutableDictionary = {
+        //get
+            //{
+            let config:NSMutableDictionary =  NSMutableDictionary(contentsOfFile: self.configFilePath as String)!
+            config.objectForKey("Cuisines") as! NSMutableDictionary
             let userDefaults = NSUserDefaults.standardUserDefaults()
-            if let cuisineTypesDict: NSMutableDictionary = userDefaults.objectForKey(Settings.CUISINE_TYPES_SELECTION_KEY) as? NSMutableDictionary {
-                return cuisineTypesDict
-            } else {
+        
+            if let cuisineTypesDict: NSMutableDictionary = userDefaults.objectForKey(Settings.CUISINE_TYPES_SELECTION_KEY)?.mutableCopy() as? NSMutableDictionary {
+                let userDefaultsTypes = Set(cuisineTypesDict.allKeys as! [String])
+                
                 let config:NSMutableDictionary =  NSMutableDictionary(contentsOfFile: self.configFilePath as String)!
+                let configFileDict:NSMutableDictionary =  config.objectForKey("Cuisines") as! NSMutableDictionary
+                var  configFilekeys = Set(configFileDict.allKeys as! [String])
+                let newCuisineTypes = configFilekeys.subtract(userDefaultsTypes)
+                if (newCuisineTypes.count > 0){
+                    for cuisineType in newCuisineTypes {
+                        cuisineTypesDict.setObject(configFileDict[cuisineType]!, forKey: cuisineType)
+                    }
+                }
+                let staleCuisineType = userDefaultsTypes.subtract(configFilekeys)
+                if (staleCuisineType.count>0){
+                    for cuisineType in staleCuisineType {
+                        cuisineTypesDict.removeObjectForKey(cuisineType)
+                    }
+                }
+                return cuisineTypesDict;
+            } else {
                 return config.objectForKey("Cuisines") as! NSMutableDictionary
             }
-        }
+        //}
        
-    }
+    }()
     
     
     func save() {
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setObject(cuisines, forKey: Settings.CUISINE_TYPES_SELECTION_KEY)
+        userDefaults.setObject(self.cuisines, forKey: Settings.CUISINE_TYPES_SELECTION_KEY)
     }
 }
