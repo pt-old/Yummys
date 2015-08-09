@@ -15,13 +15,17 @@ class Filter : NSObject {
         let result = NSMutableArray()
         let configCat = self.categories()
         for cuisine in cuisineArray {
-            let cuisineTypes:NSArray = cuisine["categories"] as! NSArray
-            for cui in cuisineTypes {
-                let cc = cui as! NSArray
-                for c in cc {
-                    if configCat.indexOfObject(c) != NSNotFound {
-                        result.addObject(cuisine)
-                        break
+            let index = cuisineArray.indexOfObject(cuisine)
+            var categories:NSArray? = cuisine["categories"] as? NSArray
+            if (categories != nil) {
+                let cuisineTypes:NSArray = cuisine["categories"] as! NSArray
+                for cui in cuisineTypes {
+                    let cc = cui as! NSArray
+                    for c in cc {
+                        if configCat.indexOfObject(c) != NSNotFound {
+                            result.addObject(cuisine)
+                            break
+                        }
                     }
                 }
             }

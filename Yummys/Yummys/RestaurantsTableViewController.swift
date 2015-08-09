@@ -35,7 +35,8 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
         
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+            locationManager.distanceFilter = 1000.0 //1000 meter
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
         }
         
@@ -43,30 +44,34 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Settings", style: .Plain, target: self, action: "loadSettings")
     }
     
-    var currentLocation : CLLocationCoordinate2D?
+    var currentLocation : CLLocation?
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         var locValue:CLLocationCoordinate2D = manager.location.coordinate
         if (currentLocation == nil ||
-            currentLocation!.latitude != locValue.latitude ||
-            currentLocation!.longitude != locValue.longitude) {
-            currentLocation = locValue
+            currentLocation!.coordinate.latitude != locValue.latitude ||
+            currentLocation!.coordinate.longitude != locValue.longitude) {
+            currentLocation = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)
             
                 //TEST CODE:
 //                self.currentLocation!.latitude = 37.777594
 //                self.currentLocation!.longitude = -122.436561
-            yelpInterface.queryBusinessInfoForTerm(self.term, location: "\(self.currentLocation!.latitude),\(self.currentLocation!.longitude)") { (allBusinesses, err) -> Void in
-                self.allBusinesses = allBusinesses
-                self.filteredBusinesses = Filter.sharedInstance.run(self.allBusinesses)
-                
-                NSLog("locationManager ALL Results=========>")
-                self.printBusinesses(self.allBusinesses as! [NSDictionary])
-                NSLog("locationManager FILTERED Results=========>")
-                self.printBusinesses(self.filteredBusinesses as! [NSDictionary])
+            //yelpInterface.queryBusiness(self.term, location: "\(self.currentLocation!.latitude),\(self.currentLocation!.longitude)")
+            yelpInterface.queryBusiness("\(self.currentLocation!.coordinate.latitude),\(self.currentLocation!.coordinate.longitude)") { (allBusinesses, err) -> Void in
+                if (allBusinesses != nil) {
+                    self.allBusinesses = allBusinesses
+                    self.filteredBusinesses = Filter.sharedInstance.run(self.allBusinesses)
+                    
+                    NSLog("locationManager ALL Results=========>")
+                    self.printBusinesses(self.allBusinesses as! [NSDictionary])
+                    NSLog("locationManager FILTERED Results=========>")
+                    self.printBusinesses(self.filteredBusinesses as! [NSDictionary])
 
-                dispatch_async(dispatch_get_main_queue(), {self.tableView.reloadData()})
+                    dispatch_async(dispatch_get_main_queue(), {self.tableView.reloadData()})
+                }
             }
         }
     }
+    
     
     override func viewDidAppear(animated: Bool) {
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -91,11 +96,16 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
     }
     
     func printBusinesses(businesses:[NSDictionary]) {
-        for business:NSDictionary in businesses {
-            let name = (business.objectForKey("name") as? String)!
-            let cuisinetype:String  = (business.objectForKey("categories") as? NSArray)!.objectAtIndex(0).objectAtIndex(0) as! String
-            NSLog("Name = \(name), type = \(cuisinetype)")
-        }
+//        NSLog("Total number of businesses = \(businesses.count)")
+//        for business:NSDictionary in businesses {
+//            let name = (business.objectForKey("name") as? String)!
+//            let categories = business.objectForKey("categories") as? NSArray
+//            var cuisinetype:String! = "unknown"
+//            if (categories != nil) {
+//                cuisinetype = categories!.objectAtIndex(0).objectAtIndex(0) as! String
+//            }
+//            NSLog("Name = \(name), type = \(cuisinetype)")
+//        }
     }
     
     func loadSettings() {
@@ -126,8 +136,17 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
         let business: NSDictionary = self.filteredBusinesses[indexPath.row] as! NSDictionary
         cell?.textLabel!.text = business.objectForKey("name") as? String
         let cuisinetype:String  = (business.objectForKey("categories") as? NSArray)!.objectAtIndex(0).objectAtIndex(0) as! String
-        cell?.detailTextLabel?.text = cuisinetype
+        
+        
+        let location: NSDictionary = (business.objectForKey("location") as? NSDictionary)!
+        let coordinate = location["coordinate"] as! NSDictionary
+        let lattitude = (coordinate["latitude"] as! NSNumber).doubleValue
+        let longitude = (coordinate["longitude"] as! NSNumber).doubleValue
 
+        let businessLocation = CLLocation(latitude: lattitude, longitude: longitude)
+        let distance = String(format:"%.1f", Double(round(businessLocation.distanceFromLocation(currentLocation) / 1609.344)))  // meter to miles
+        
+        cell?.detailTextLabel?.text = "\(cuisinetype), Distance : \(distance) miles"
         return cell!
     }
     
@@ -135,16 +154,17 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
         let business: NSDictionary = self.filteredBusinesses[indexPath.row] as! NSDictionary
         let name = business.objectForKey("name") as? String
         let telNum = business.objectForKey("display_phone") as? String
-        var alert = UIAlertController(title: "Call \(name!)", message: "\(telNum!)", preferredStyle: UIAlertControllerStyle.Alert)
+        var alert = UIAlertController(title: "  \(name!)", message: "\(telNum!)", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Call", style: .Default, handler: { action in
             //UIApplication.sharedApplication().openURL(NSURL(string: (telNum!))!)
             UIApplication.sharedApplication().openURL(NSURL(string: "tel:\(telNum!)")!)
             NSLog("calling restaurantName = \(name!), number = tel:\(telNum)")
 
         }))
-        alert.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "cancel", style: .Cancel, handler: { action in
+            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }))
         self.presentViewController(alert, animated: true, completion: nil)
-        
 
         //UIApplication.sharedApplication().openURL(NSURL(string: (business.objectForKey("display_phone") as? String)!)!)
     }

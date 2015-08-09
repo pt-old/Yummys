@@ -22,9 +22,6 @@
  @param term: The term of the search, e.g: dinner
  @param location: The location in which the term should be searched for, e.g: San Francisco, CA
  */
-- (void)queryTopBusinessInfoForTerm:(NSString *)term location:(NSString *)location completionHandler:(void (^)(NSDictionary *jsonResponse, NSError *error))completionHandler;
-
-- (void)queryBusinessInfoForTerm:(NSString *)term location:(NSString *)location completionHandler:(void (^)(NSArray *businesses, NSError *error))completionHandler;
-
+- (void)queryBusiness:(NSString *)location completionHandler:(void (^)(NSArray *businesses, NSError *error))completionHandler;
 
 @end

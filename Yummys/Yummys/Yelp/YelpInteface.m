@@ -11,70 +11,60 @@
 static NSString * const kAPIHost           = @"api.yelp.com";
 static NSString * const kSearchPath        = @"/v2/search/";
 static NSString * const kBusinessPath      = @"/v2/business/";
-static NSString * const kSearchLimit       = @"1000";
+static NSString * const kSearchLimit       = @"20";
+static NSString * const kRadiusFilter      = @"10000";
+static NSString * const kTermFilter        = @"dinner";
 
 @implementation YelpInterface : NSObject 
 
 #pragma mark - Public
-- (void)queryBusinessInfoForTerm:(NSString *)term location:(NSString *)location completionHandler:(void (^)(NSArray *businesses, NSError *error))completionHandler {
-    NSLog(@"Querying the Search API with term \'%@\' and location \'%@'", term, location);
+- (void)queryBusiness:(NSString *)location completionHandler:(void (^)(NSArray *businesses, NSError *error))completionHandler {
+    NSLog(@"Querying the Search API with location \'%@'", location);
+    __block NSArray *businesses = [[NSMutableArray alloc] init];
+    __block NSInteger offset = 0;
+    [self queryBusinessInfoWithLocation:location offset:0 completionHandler:^(NSArray *retrievedBusiness, NSInteger totalBusinesses, NSInteger currentOffset, NSError *error) {
+        businesses = [businesses arrayByAddingObjectsFromArray:retrievedBusiness];
+        completionHandler(businesses, error);
+        offset += 20;
+        NSLog(@"currentOffset = %ld, businessCount = %lu, retirevedBusinessCount = %lu", (long)currentOffset, (unsigned long)businesses.count,retrievedBusiness.count);
+        while (offset < totalBusinesses) {
+            [self queryBusinessInfoWithLocation:location offset:offset completionHandler:^(NSArray *retrievedBusiness, NSInteger totalBusinesses, NSInteger currentOffset, NSError *error) {
+                businesses = [businesses arrayByAddingObjectsFromArray:retrievedBusiness];
+                //if (currentOffset + 20 > totalBusinesses) {
+                    completionHandler(businesses, error);
+                //}
+                NSLog(@"currentOffset = %ld, businessCount = %lu, retirevedBusinessCount = %lu", (long)currentOffset, (unsigned long)businesses.count,retrievedBusiness.count);
+            }];
+
+            offset +=20;
+        }
+    }];
+}
+
+- (void)queryBusinessInfoWithLocation:(NSString *)location offset:(NSInteger)offset completionHandler:(void (^)(NSArray *businesses, NSInteger totalBusinesses, NSInteger offset, NSError *error))completionHandler {
     
     //Make a first request to get the search results with the passed term and location
-    NSURLRequest *searchRequest = [self _searchRequestWithTerm:term location:location];
+    NSURLRequest *searchRequest = [self _searchRequestWithLocation:location offset:offset];
     NSURLSession *session = [NSURLSession sharedSession];
     [[session dataTaskWithRequest:searchRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        
         if (!error && httpResponse.statusCode == 200) {
-            
             NSDictionary *searchResponseJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
             NSArray *businessArray = searchResponseJSON[@"businesses"];
-            
+            NSString *totalStr = searchResponseJSON[@"total"];
+            NSInteger totalBusinesses = totalStr.integerValue;
             //NSLog(@"Result = %@", businessArray);
             if ([businessArray count] > 0) {
-                completionHandler(businessArray, error);
+                completionHandler(businessArray,totalBusinesses, offset, error);
             } else {
-                completionHandler(nil, error); // No business was found
+                completionHandler(nil, totalBusinesses, offset, error); // No business was found
             }
         } else {
-            completionHandler(nil, error); // An error happened or the HTTP response is not a 200 OK
+            completionHandler(nil, 0, 0, error); // An error happened or the HTTP response is not a 200 OK
         }
     }] resume];
 }
 
-
-- (void)queryTopBusinessInfoForTerm:(NSString *)term location:(NSString *)location completionHandler:(void (^)(NSDictionary *topBusinessJSON, NSError *error))completionHandler {
-
-  NSLog(@"Querying the Search API with term \'%@\' and location \'%@'", term, location);
-
-  //Make a first request to get the search results with the passed term and location
-  NSURLRequest *searchRequest = [self _searchRequestWithTerm:term location:location];
-  NSURLSession *session = [NSURLSession sharedSession];
-  [[session dataTaskWithRequest:searchRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-
-    if (!error && httpResponse.statusCode == 200) {
-
-      NSDictionary *searchResponseJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-      NSArray *businessArray = searchResponseJSON[@"businesses"];
-
-     // NSLog(@"Result = %@", businessArray);
-      if ([businessArray count] > 0) {
-        NSDictionary *firstBusiness = [businessArray firstObject];
-        NSString *firstBusinessID = firstBusiness[@"id"];
-        NSLog(@"%lu businesses found, querying business info for the top result: %@", (unsigned long)[businessArray count], firstBusinessID);
-
-        [self queryBusinessInfoForBusinessId:firstBusinessID completionHandler:completionHandler];
-      } else {
-        completionHandler(nil, error); // No business was found
-      }
-    } else {
-      completionHandler(nil, error); // An error happened or the HTTP response is not a 200 OK
-    }
-  }] resume];
-}
 
 - (void)queryBusinessInfoForBusinessId:(NSString *)businessID completionHandler:(void (^)(NSDictionary *topBusinessJSON, NSError *error))completionHandler {
 
@@ -105,17 +95,17 @@ static NSString * const kSearchLimit       = @"1000";
 
  @return The NSURLRequest needed to perform the search
  */
-- (NSURLRequest *)_searchRequestWithTerm:(NSString *)term location:(NSString *)location {
+- (NSURLRequest *)_searchRequestWithLocation:(NSString *)location offset:(NSInteger)offset {
   NSDictionary *params = @{
-                           @"term": term,
+                           @"term": kTermFilter,
                            @"ll": location,
-                           //@"location":@"Sunnyvale, CA",
-                           //@"bounds":@"37.950000,-122.500000|37.788022,-122.399797",
-                           //@"limit": kSearchLimit
+                           @"radius_filter":kRadiusFilter,
+                           @"offset":[NSString stringWithFormat:@"%ld", (long)offset],
+                           @"sort":@"0"
                            };
 
   return [NSURLRequest requestWithHost:kAPIHost path:kSearchPath params:params];
-    //return [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://api.yelp.com/v2/search?term=food&bounds=37.900000,-122.500000|37.788022,-122.399797&limit=3"]];
+    //return [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://api.yelp.com/v2/search?term=Dance&limit=200&offset=50&sort=0&location=San+Francisco"]];
 }
 
 /**
