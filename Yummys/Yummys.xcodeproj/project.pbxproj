@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D26A85E1B77E6D900698891 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D26A85D1B77E6D900698891 /* PreferencesViewController.swift */; };
+		9D26A8601B77EAAC00698891 /* PreferencesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D26A85F1B77EAAC00698891 /* PreferencesTableViewController.swift */; };
 		9D330D001B7148340007354F /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D330CFF1B7148340007354F /* Filter.swift */; };
 		9D330D011B7148340007354F /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D330CFF1B7148340007354F /* Filter.swift */; };
 		9D5B04941B5E0896002944CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B04931B5E0896002944CE /* AppDelegate.swift */; };
@@ -80,6 +82,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9D26A85D1B77E6D900698891 /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
+		9D26A85F1B77EAAC00698891 /* PreferencesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesTableViewController.swift; sourceTree = "<group>"; };
 		9D330CFF1B7148340007354F /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		9D5B048E1B5E0896002944CE /* Yummys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yummys.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D5B04921B5E0896002944CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -192,12 +196,14 @@
 				9D5B04C51B5F7411002944CE /* SettingsTableViewCell.swift */,
 				9D5B04BF1B5F56A3002944CE /* RestaurantsTableViewController.swift */,
 				9D5B04971B5E0896002944CE /* Main.storyboard */,
+				9D26A85F1B77EAAC00698891 /* PreferencesTableViewController.swift */,
 				9D5B049A1B5E0896002944CE /* Images.xcassets */,
 				9D5B049C1B5E0896002944CE /* LaunchScreen.xib */,
 				9D5B04911B5E0896002944CE /* Supporting Files */,
 				9DA5E14F1B6EAB2200E5EC8F /* Yummys-Bridging-Header.h */,
 				9DA5E1501B6EAB2200E5EC8F /* YummysTests-Bridging-Header.h */,
 				9D330CFF1B7148340007354F /* Filter.swift */,
+				9D26A85D1B77E6D900698891 /* PreferencesViewController.swift */,
 			);
 			path = Yummys;
 			sourceTree = "<group>";
@@ -412,9 +418,11 @@
 				9DA5E25C1B6EBB3700E5EC8F /* NSURLRequest+OAuth.m in Sources */,
 				9DA5E23D1B6EB9A000E5EC8F /* OADataFetcher.m in Sources */,
 				9DA5E2451B6EB9A000E5EC8F /* OAProblem.m in Sources */,
+				9D26A85E1B77E6D900698891 /* PreferencesViewController.swift in Sources */,
 				9DA5E23B1B6EB9A000E5EC8F /* OAConsumer.m in Sources */,
 				9DA5E23F1B6EB9A000E5EC8F /* OAHMAC_SHA1SignatureProvider.m in Sources */,
 				9DA5E2351B6EB9A000E5EC8F /* NSURL+Base.m in Sources */,
+				9D26A8601B77EAAC00698891 /* PreferencesTableViewController.swift in Sources */,
 				9D330D001B7148340007354F /* Filter.swift in Sources */,
 				9DA5E2371B6EB9A000E5EC8F /* OAAttachment.m in Sources */,
 				9D5B04941B5E0896002944CE /* AppDelegate.swift in Sources */,

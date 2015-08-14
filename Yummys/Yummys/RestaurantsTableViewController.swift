@@ -25,6 +25,12 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
         let settingsVC = mainStoryboard.instantiateViewControllerWithIdentifier("SettingsNavigationController") as! UINavigationController
         return settingsVC
     }
+    
+    var preferencesViewController : UINavigationController {
+        let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let prefVC = mainStoryboard.instantiateViewControllerWithIdentifier("PreferencesNavigationController") as! UINavigationController
+        return prefVC
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,18 +54,17 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         var locValue:CLLocationCoordinate2D = manager.location.coordinate
         if (currentLocation == nil ||
-            currentLocation!.coordinate.latitude != locValue.latitude ||
-            currentLocation!.coordinate.longitude != locValue.longitude) {
+            manager.location.distanceFromLocation(currentLocation) > 1000.0 /*1000 meter*/) {
             currentLocation = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)
             
                 //TEST CODE:
 //                self.currentLocation!.latitude = 37.777594
 //                self.currentLocation!.longitude = -122.436561
-            //yelpInterface.queryBusiness(self.term, location: "\(self.currentLocation!.latitude),\(self.currentLocation!.longitude)")
+
             yelpInterface.queryBusiness("\(self.currentLocation!.coordinate.latitude),\(self.currentLocation!.coordinate.longitude)") { (allBusinesses, err) -> Void in
                 if (allBusinesses != nil) {
                     self.allBusinesses = allBusinesses
-                    self.filteredBusinesses = Filter.sharedInstance.run(self.allBusinesses)
+                    self.filteredBusinesses = Settings.sharedInstance.doFilter(self.allBusinesses)
                     
                     NSLog("locationManager ALL Results=========>")
                     self.printBusinesses(self.allBusinesses as! [NSDictionary])
@@ -84,7 +89,7 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.filteredBusinesses = Filter.sharedInstance.run(self.allBusinesses)
+        self.filteredBusinesses = Settings.sharedInstance.doFilter(self.allBusinesses)
         NSLog("viewWillAppear FILTERED Results=========>")
         self.printBusinesses(self.filteredBusinesses as! [NSDictionary])
         self.tableView.reloadData()
@@ -109,7 +114,7 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
     }
     
     func loadSettings() {
-        presentViewController(settingsViewController, animated: true, completion: nil)
+        presentViewController(preferencesViewController, animated: true, completion: nil)
     }
 
     // MARK: - Table view data source
@@ -146,7 +151,11 @@ class RestaurantsTableViewController: UITableViewController, CLLocationManagerDe
         let businessLocation = CLLocation(latitude: lattitude, longitude: longitude)
         let distance = String(format:"%.1f", Double(round(businessLocation.distanceFromLocation(currentLocation) / 1609.344)))  // meter to miles
         
-        cell?.detailTextLabel?.text = "\(cuisinetype), Distance : \(distance) miles"
+        let rating: NSNumber = (business.objectForKey("rating") as? NSNumber)!
+        
+        let reviews:NSNumber = (business.objectForKey("review_count") as? NSNumber)!
+        
+        cell?.detailTextLabel?.text = "\(cuisinetype),Distance:\(distance) miles, rating:\(rating.integerValue), reviews: \(reviews.integerValue)"
         return cell!
     }
     
